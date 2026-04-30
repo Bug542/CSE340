@@ -1,49 +1,40 @@
-import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
+const express = require('express');
+const path = require('path');
+require('dotenv').config();
 
 const app = express();
 
-// fix __dirname for ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// env
 const NODE_ENV = process.env.NODE_ENV || 'production';
 const PORT = process.env.PORT || 3000;
-const name = process.env.NAME;
 
-// middleware
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));
 
-// ROUTES
 app.get('/', (req, res) => {
-    res.render('home', { title: 'Home', name });
+    res.render('home', { title: 'Home Page' });
 });
 
 app.get('/about', (req, res) => {
-    res.render('about', { title: 'About', name });
+    res.render('about', { title: 'About Page' });
 });
 
 app.get('/products', (req, res) => {
-    res.render('products', { title: 'Products', name });
+    res.render('products', { title: 'Products Page' });
 });
 
-// ✅ ASSIGNMENT REQUIRED ROUTE
 app.get('/student', (req, res) => {
-    res.render('student', {
-        title: 'Student Info',
-        student: {
-            name: 'John Doe',
-            id: '123456',
-            email: 'john@example.com',
-            address: '123 Main St, Utah'
-        }
-    });
+    const student = {
+        name: 'Brandon Pineda',
+        id: '123456',
+        email: 'brandon@email.com',
+        address: 'West Valley City, Utah'
+    };
+
+    res.render('student', student);
 });
 
-// start server
 app.listen(PORT, () => {
-    console.log(`Server running: http://127.0.0.1:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });

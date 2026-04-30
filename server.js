@@ -1,7 +1,7 @@
 // Import express using ESM syntax
 import express from 'express';
 
-// Create an instance of an Express application
+// Create an instance of an Express applications
 const app = express();
 
 // Load environment variable

@@ -1,6 +1,14 @@
-const express = require('express');
-const path = require('path');
-require('dotenv').config();
+import express from 'express';
+import path from 'path';
+import dotenv from 'dotenv';
+import * as pagesController from './src/controllers/pagesController.js';
+import { fileURLToPath } from 'url';
+import { dirname as pathDirname } from 'path';
+
+dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = pathDirname(__filename);
 
 const app = express();
 
@@ -12,28 +20,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));
 
-app.get('/', (req, res) => {
-    res.render('home', { title: 'Home Page' });
-});
-
-app.get('/about', (req, res) => {
-    res.render('about', { title: 'About Page' });
-});
-
-app.get('/products', (req, res) => {
-    res.render('products', { title: 'Products Page' });
-});
-
-app.get('/student', (req, res) => {
-    const student = {
-        name: 'Brandon Pineda',
-        id: '123456',
-        email: 'brandon@email.com',
-        address: 'West Valley City, Utah'
-    };
-
-    res.render('student', student);
-});
+app.get('/', pagesController.home);
+app.get('/about', pagesController.about);
+app.get('/products', pagesController.products);
+app.get('/student', pagesController.student);
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
